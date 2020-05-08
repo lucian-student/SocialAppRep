@@ -1,0 +1,10 @@
+.card:hover {
+    color: gray;
+  }
+
+.hoverIcon:hover{
+  color: green;
+}
+.hoverIcon{
+ margin-inline-start: 10px;
+}
