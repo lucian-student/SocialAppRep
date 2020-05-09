@@ -100,20 +100,6 @@ module.exports = {
 
             return note;
 
-        },
-        async deleteGroupNotes(_,{groupId}){
-
-            try {
-                const notes= await Note.find({groupId:groupId});
-                
-                    await notes.delete();
-                    return notes;
-
-               
-            } catch (err) {
-                throw new Error(err);
-            }
-            
         }
     },
     Subscription: {

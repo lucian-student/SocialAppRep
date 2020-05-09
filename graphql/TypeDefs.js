@@ -69,7 +69,6 @@ input RegisterInput{
         deleteNote(noteId:ID!):String!
         editNote(noteId:ID!,content:String!):Note!
         createGroupedNote(content:String!,groupId:String!):Note!
-        deleteGroupNotes(groupId:String!):[Note]!
         
         createRequest(username:String!,groupId:ID!,groupName:String!):User!
         deleteRequest(requestId:ID!):User!

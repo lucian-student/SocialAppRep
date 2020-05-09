@@ -54,6 +54,7 @@ function Social() {
 
                     <div>
                         <h1>welcome to socializing {user.username}</h1>
+                        <GroupForm/>
                         <h2 >These are groups u belong to:</h2>
                         {groups.map(group => (
                             <Card.Group key={group.id}>

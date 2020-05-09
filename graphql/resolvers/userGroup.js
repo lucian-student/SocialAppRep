@@ -1,5 +1,6 @@
 const User = require('../../models/User');
-const Group = require('../../models/Group')
+const Group = require('../../models/Group');
+const Note = require('../../models/note');
 
 const { UserInputError } = require('apollo-server');
 const checkAuth = require('../../utils/check-auth');
@@ -67,10 +68,25 @@ module.exports = {
 
                 group.users.splice(groupIndex, 1);
 
-                if(group.users.length>0){
+                if (group.users.length > 0) {
                     await group.save();
-                }else{
+                } else {
                     //add query for deleting all posts
+
+                    try {
+                        const notes = await Note.find({ groupId: groupId });
+                        if(notes){
+                            notes.forEach(async (note) => {                    
+                                await note.delete();
+                            });
+                            
+                        }
+                    } catch (err) {
+                        throw new Error(err);
+                    }
+
+
+                    //delte group
                     await group.delete();
                 }
                 //leave part 2

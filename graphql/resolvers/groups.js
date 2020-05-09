@@ -1,13 +1,14 @@
 const Group = require('../../models/Group');
 const User = require('../../models/User');
+const Note = require('../../models/note');
 const checkAuth = require('../../utils/check-auth');
 const { UserInputError } = require('apollo-server');
 
 module.exports = {
     Query: {
-        getGroup : async (_,{groupId})=>{
+        getGroup: async (_, { groupId }) => {
             try {
-                const group  = await Group.findById(groupId);
+                const group = await Group.findById(groupId);
                 if (group) {
                     return group;
                 } else {
@@ -60,8 +61,8 @@ module.exports = {
 
                     // deleting membership from all users
                     group.users.forEach(async (user) => {
-                        const nextUser = await User.findOne({username:user.username});
-                        
+                        const nextUser = await User.findOne({ username: user.username });
+
                         const requestIndex = nextUser.groups.findIndex(grp => grp.id === group.id);
 
                         nextUser.groups.splice(requestIndex, 1);
@@ -71,6 +72,18 @@ module.exports = {
                     });
 
                     //add query for deleting posts
+                    try {
+                        const notes = await Note.find({ groupId: groupId });
+                        if(notes){
+                            notes.forEach(async (note) => {                    
+                                await note.delete();
+                            });
+                            
+                        }
+                    } catch (err) {
+                        throw new Error(err);
+                    }
+
                     await group.delete();
 
                     return 'group was deleted';
