@@ -1,6 +1,7 @@
 const User = require('../../models/User');
 const checkAuth = require('../../utils/check-auth');
 const { UserInputError } = require('apollo-server');
+const {  validateRequestInput} = require('../../utils/validators');
 //const GroupRequest = require('../../models/GroupRequest');
 
 module.exports = {
@@ -8,13 +9,20 @@ module.exports = {
         createRequest: async (_, { username, groupId, groupName }, context) => {
             const user = checkAuth(context);
 
+            const { errors, valid } = validateRequestInput(username);
+
+            if (!valid||user.username===username) {
+                throw new UserInputError('not valid inputs', {errors});
+            }
+
+
             const targetUser = await User.findOne({ username });
 
             if (targetUser) {
 
 
                  if(targetUser.groupRequests.some(req => req.groupId ===groupId)){
-                    throw new UserInputError('duplicate');
+                    throw new UserInputError('duplicate',{errors});
                 } else{
                      targetUser.groupRequests.unshift({
                      username:user.username,
@@ -28,7 +36,7 @@ module.exports = {
                 
 
             } else {
-                throw new UserInputError('user doesnt exist');
+                throw new UserInputError('user doesnt exist',{errors});
             }
 
         },

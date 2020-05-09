@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { Card, Dropdown, Menu } from 'semantic-ui-react';
 import GroupCard from '../components/GroupCard';
 import InveitCard from '../components/InveitCard';
+import GroupForm from '../components/GroupForm';
 
 
 function Social() {
