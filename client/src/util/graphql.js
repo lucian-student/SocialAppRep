@@ -145,11 +145,14 @@ query getGroup(
 export const JOIN_GROUP_MUTATION =gql`
 mutation joinGroup(
   $groupId:ID!,
-  $groupName:String!
+  $groupName:String!,
+  $requestId:ID!
+
 ){
   joinGroup(
     groupId:$groupId,
-    groupName:$groupName
+    groupName:$groupName,
+    requestId:$requestId
   ){
     id
     username
@@ -161,3 +164,4 @@ mutation joinGroup(
   }
 }
 `;
+

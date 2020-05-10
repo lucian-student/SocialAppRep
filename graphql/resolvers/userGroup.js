@@ -7,7 +7,7 @@ const checkAuth = require('../../utils/check-auth');
 
 module.exports = {
     Mutation: {
-        joinGroup: async (_, { groupName, groupId }, context) => {
+        joinGroup: async (_, { groupName, groupId,requestId }, context) => {
             const { id } = checkAuth(context);
 
             const group = await Group.findById(groupId);
@@ -31,12 +31,17 @@ module.exports = {
                             groupId: groupId,
                             groupName: groupName
                         });
+
+                        const requestIndex = user.groupRequests.findIndex(req => req.id === requestId);
+
+                        user.groupRequests.splice(requestIndex,1);
                         await user.save();
 
                         // joining group part 1
                         group.users.unshift({
                             username: user.username
                         });
+
 
                         await group.save();
 

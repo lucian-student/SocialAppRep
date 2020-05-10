@@ -23,7 +23,7 @@ function NotePage(props) {
             noteId
         }
     });
-
+    
     //note form
 
     const [errors, setErrors] = useState({});
@@ -62,6 +62,10 @@ function NotePage(props) {
     // end of  note form
     if (loading) return <p>Loading...</p>
     if (error) return <p>Error.</p>
+    if(!user){
+        return <div>u logged off</div>
+    }
+
     let noteMarkup
     if (!data.getNote) {
         noteMarkup = <p>Loading Note...</p>
@@ -120,10 +124,14 @@ function NotePage(props) {
                                     <p style={{wordBreak:"break-all"}}>{content}</p>
                                 </div>
                                 <br />
-
-                                <Button onClick={() => setEditable(true)}>
+                                {user.username===username?(
+                                    <Button onClick={() => setEditable(true)}>
                                     Edite note
                                     </Button>
+                                ):(
+                                    <div></div>
+                                )}
+                                
                             </Paper>
                         </div>
                     </div>

@@ -21,7 +21,7 @@ module.exports = {
             if (targetUser) {
 
 
-                 if(targetUser.groupRequests.some(req => req.groupId ===groupId)){
+                 if(targetUser.groupRequests.some(req => req.groupId ===groupId)||targetUser.groups.some(grp=>grp.groupId===groupId)){
                     throw new UserInputError('duplicate',{errors});
                 } else{
                      targetUser.groupRequests.unshift({

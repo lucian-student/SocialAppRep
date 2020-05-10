@@ -58,7 +58,6 @@ function Home() {
 
           ))
         )}
-      <Grid.Row></Grid.Row>
     </Grid>
 
   )

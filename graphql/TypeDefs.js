@@ -55,6 +55,7 @@ input RegisterInput{
     type Query{
        getNotes(username:String!):[Note]
        getNote(noteId:ID!):Note
+       getGroupedNotes(groupId:String!):[Note]
 
        getUser(userId:ID!):User
        
@@ -73,7 +74,7 @@ input RegisterInput{
         createRequest(username:String!,groupId:ID!,groupName:String!):User!
         deleteRequest(requestId:ID!):User!
 
-        joinGroup(groupName:String!,groupId:ID!):User!
+        joinGroup(groupName:String!,groupId:ID!,requestId:ID!):User!
         leaveGroup(userGroupId:ID!,groupId:ID!):User!
 
         createGroup(groupName:String!):Group!

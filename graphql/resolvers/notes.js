@@ -26,8 +26,19 @@ module.exports = {
                 throw new Error(err);
             }
         }
+        ,
+        async getGroupedNotes(_, { groupId }) {
+            try {
+                const notes = await Note.find({ groupId: groupId }).sort({ createdAt: -1 });
+                return notes;
+            } catch (err) {
+                throw new Error(err);
+            }
 
-    },
+
+        }
+    }
+    ,
     Mutation: {
         async createNote(_, { content }, context) {
             const user = checkAuth(context);
@@ -81,7 +92,7 @@ module.exports = {
                 throw new Error(err);
             }
         },
-        async createGroupedNote(_,{content,groupId},context){
+        async createGroupedNote(_, { content, groupId }, context) {
             const user = checkAuth(context);
 
             const newNote = new Note({
@@ -90,7 +101,7 @@ module.exports = {
                 username: user.username,
                 createdAt: new Date().toISOString(),
                 grouped: true,
-                groupId:groupId
+                groupId: groupId
             });
             const note = await newNote.save();
 
