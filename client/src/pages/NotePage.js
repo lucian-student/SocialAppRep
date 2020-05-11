@@ -5,7 +5,7 @@ import { Form } from 'semantic-ui-react';
 import { Paper, Button } from '@material-ui/core';
 import { AuthContext } from '../context/auth';
 import { useForm } from '../util/hooks';
-import { connect } from 'mongoose';
+
 
 
 
@@ -23,7 +23,7 @@ function NotePage(props) {
             noteId
         }
     });
-    
+
     //note form
 
     const [errors, setErrors] = useState({});
@@ -51,7 +51,7 @@ function NotePage(props) {
     });
 
     function editNoteCallback() {
-       
+
         editNote();
         setEditable(false);
     }
@@ -62,23 +62,21 @@ function NotePage(props) {
     // end of  note form
     if (loading) return <p>Loading...</p>
     if (error) return <p>Error.</p>
-    if(!user){
+    if (!user) {
         return <div>u logged off</div>
     }
 
-    let noteMarkup
+    let notePage
     if (!data.getNote) {
-        noteMarkup = <p>Loading Note...</p>
+        notePage = <p>Loading Note...</p>
     } else {
         const {
-            id,
             content,
-            createdAt,
             username,
         } = data.getNote
 
-            values.content=content;
-        noteMarkup = (
+        values.content = content;
+        notePage = (
 
             <div>
                 {editiable
@@ -90,7 +88,7 @@ function NotePage(props) {
                                 <h1 >{username}</h1>
                                 <div>
                                     <Form
-                                             onSubmit={onSubmit}
+                                        onSubmit={onSubmit}
                                     >
                                         <h2>create new note:</h2>
                                         <Form.Field>
@@ -120,18 +118,18 @@ function NotePage(props) {
                             <Paper elevation={3}>
                                 <h1 >{username}</h1>
 
-                                <div style={{ minHeight: 400}}>
-                                    <p style={{wordBreak:"break-all"}}>{content}</p>
+                                <div style={{ minHeight: 400 }}>
+                                    <p style={{ wordBreak: "break-all" }}>{content}</p>
                                 </div>
                                 <br />
-                                {user.username===username?(
+                                {user.username === username ? (
                                     <Button onClick={() => setEditable(true)}>
-                                    Edite note
+                                        Edite note
                                     </Button>
-                                ):(
-                                    <div></div>
-                                )}
-                                
+                                ) : (
+                                        <div></div>
+                                    )}
+
                             </Paper>
                         </div>
                     </div>
@@ -141,7 +139,7 @@ function NotePage(props) {
         );
     }
 
-    return noteMarkup;
+    return notePage;
 }
 
 const FETCH_NOTE_QUERY = gql`

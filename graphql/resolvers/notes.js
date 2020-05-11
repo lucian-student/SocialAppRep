@@ -7,7 +7,7 @@ module.exports = {
         async getNotes(_, { username }) {
 
             try {
-                const notes = await Note.find({ username }).sort({ createdAt: -1 });
+                const notes = await Note.find({ username, grouped: false }).sort({ createdAt: -1 });
                 return notes;
             } catch (err) {
                 throw new Error(err);
@@ -53,9 +53,9 @@ module.exports = {
             });
             const note = await newNote.save();
 
-            context.pubsub.publish('NEW_NOTE', {
-                newNote: note
-            });
+            /* context.pubsub.publish('NEW_NOTE', {
+                 newNote: note
+             });*/
 
             return note;
         },
@@ -67,6 +67,9 @@ module.exports = {
                 const note = await Note.findById(noteId);
                 if (user.username = note.username) {
                     await note.delete();
+
+                    
+                
                     return 'note was deleted';
 
                 } else {
@@ -82,8 +85,18 @@ module.exports = {
             try {
                 const note = await Note.findByIdAndUpdate(noteId, { content });
 
+
                 if (note) {
+
+                    //live update action here
+                   /* context.pubsub.publish('NEW_NOTE', {
+                        newNote: note
+                    });*/
+                    //end of live update action here
+
                     return note;
+
+
                 } else {
                     throw new Error('note Doesnt exist');
                 }
@@ -105,9 +118,12 @@ module.exports = {
             });
             const note = await newNote.save();
 
+            //live update action here
             context.pubsub.publish('NEW_NOTE', {
                 newNote: note
             });
+            //end of live update action here
+
 
             return note;
 

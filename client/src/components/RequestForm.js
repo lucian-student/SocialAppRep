@@ -1,4 +1,4 @@
-import React,{useState,useContext} from 'react';
+import React,{useState} from 'react';
 import { Form, Button } from 'semantic-ui-react';
 import {useForm} from '../util/hooks';
 import {useMutation} from '@apollo/react-hooks';
@@ -34,7 +34,6 @@ function RequestForm({groupParams:{id,name}}) {
 
     return (
         <div>
-            <div>request form</div>
             <Form onSubmit={onSubmit}>
                 <h2>inveit someone to this group:</h2>
                 <Form.Field>

@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { Card, Icon,Button } from 'semantic-ui-react';
+import React, { useContext } from 'react';
+import { Card, Icon } from 'semantic-ui-react';
 import {
     FETCH_UPDATABLE_USER_DATA,
     JOIN_GROUP_MUTATION,

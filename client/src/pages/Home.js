@@ -39,7 +39,7 @@ function Home() {
 
     <Grid columns={3}>
       <Grid.Row >
-        <h1>your notes</h1>
+        <h1>your personal notes</h1>
       </Grid.Row>
       {user && (
         <Grid.Column>

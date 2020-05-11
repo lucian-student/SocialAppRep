@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 //import {Container} from 'semantic-ui-react';
 
 import 'semantic-ui-css/semantic.min.css';

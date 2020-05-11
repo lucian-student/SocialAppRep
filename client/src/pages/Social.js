@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { AuthContext } from '../context/auth';
-import {FETCH_UPDATABLE_USER_DATA} from '../util/graphql';
+import { FETCH_UPDATABLE_USER_DATA } from '../util/graphql';
 import { useQuery } from '@apollo/react-hooks';
-import { Card, Dropdown, Menu } from 'semantic-ui-react';
+import { Card } from 'semantic-ui-react';
 import GroupCard from '../components/GroupCard';
 import InveitCard from '../components/InveitCard';
 import GroupForm from '../components/GroupForm';
@@ -12,7 +12,8 @@ function Social() {
 
     const { user } = useContext(AuthContext);
 
-    let userId = ''
+    let userId = '';
+
 
     if (user) {
         userId = user.id
@@ -55,7 +56,7 @@ function Social() {
 
                     <div>
                         <h1>welcome to socializing {user.username}</h1>
-                        <GroupForm/>
+                        <GroupForm />
                         <h2 >These are groups u belong to:</h2>
                         {groups.map(group => (
                             <Card.Group key={group.id}>
