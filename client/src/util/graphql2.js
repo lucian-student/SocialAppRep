@@ -32,3 +32,16 @@ mutation createGroupedNote(
 }
 
 `;
+
+export const GROUPED_NOTE_SUBSCRIPTION = gql`
+subscription{
+  newNote{
+    id
+    grouped
+    groupId
+    username
+    createdAt
+    content
+  }
+}
+`;
