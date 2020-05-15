@@ -16,7 +16,7 @@ function GroupedNoteForm({id}) {
     const [createGroupedNote] = useMutation(CREATE_GROUPED_NOTE_MUTATION, {
         variables: values,
     
-        update(proxy, result) {
+       update(proxy, result) {
             const data = proxy.readQuery({
                 query: FETCH_GROUPED_NOTES_QUERY,
                 variables: { groupId: id }

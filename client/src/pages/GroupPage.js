@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import RequestForm from '../components/RequestForm';
 import { GET_GROUP_QUERY } from '../util/graphql';
-import { useQuery, useSubscription } from '@apollo/react-hooks';
+import { useQuery, useSubscription, useLazyQuery } from '@apollo/react-hooks';
 import { FETCH_GROUPED_NOTES_QUERY, GROUPED_NOTE_SUBSCRIPTION } from '../util/graphql2';
 import GroupedNoteForm from '../components/GroupedNoteForm';
-import { Grid, Dropdown, Menu } from 'semantic-ui-react';
+import { Grid, Dropdown, Menu,Icon,Button,Popup } from 'semantic-ui-react';
 import NoteCard from '../components/NoteCard';
+
+
 
 
 function GroupPage(props) {
@@ -22,6 +24,9 @@ function GroupPage(props) {
             groupId: groupId
         }
     });
+    // use fetchNotes.subscribeToMore
+
+    let notified = '0';
 
     let notes = '';
     let newData = '';
@@ -33,27 +38,18 @@ function GroupPage(props) {
     }
     //subscription place
 
-    const noteSub = useSubscription(GROUPED_NOTE_SUBSCRIPTION,{
-        
+    const noteSub = useSubscription(GROUPED_NOTE_SUBSCRIPTION, {
+        variables: {
+            groupId
+        }
     });
 
-    let subRender = '';
-    if (noteSub.loading) {
-        subRender = (
-            <div>loading</div>
-        );
-    } else if (noteSub.error) {
-        subRender = (
-            <div>error</div>
-        );
-    }else if (noteSub.data.newNote){
-        subRender = (
-        <div>subed {noteSub.data.newNote.content}</div>
-        )
-        console.log("sub data:"+noteSub.data.newNote.content);
-    }
 
-    
+   
+
+
+
+
 
     //sub
 
@@ -75,7 +71,9 @@ function GroupPage(props) {
 
         return (
             <div>
-                <h1>welcome to group {groupId}</h1>
+                <div style={{ display: 'inline' }}>
+                    <h1 style={{ display: 'inline' }}>welcome to group {groupId}</h1>
+                </div>
                 <Menu compact>
                     <Dropdown text='group members' options={options} simple item />
                 </Menu>

@@ -83,7 +83,7 @@ input RegisterInput{
     }
 
     type Subscription{
-        newNote:Note!
+        newNote(groupId:ID!):Note
     }
     
 `;

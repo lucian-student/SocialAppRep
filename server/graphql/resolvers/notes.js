@@ -1,6 +1,10 @@
 const Note = require('../../models/note');
 const checkAuth = require('../../utils/check-auth');
 const { AuthentactionError } = require('apollo-server');
+const { withFilter, } = require('apollo-server');
+
+const NEW_NOTE ='NEW_NOTE';
+
 module.exports = {
     Query: {
 
@@ -119,7 +123,9 @@ module.exports = {
             const note = await newNote.save();
 
             //live update action here
-            context.pubsub.publish('NEW_NOTE', {
+            // if it doesnt work add note.dataValues
+            context.pubsub.publish(NEW_NOTE, {
+                groupId:groupId,
                 newNote: note
             });
             //end of live update action here
@@ -131,7 +137,16 @@ module.exports = {
     },
     Subscription: {
         newNote: {
+            subscribe: withFilter(
+              (_,__,{pubsub}) => pubsub.asyncIterator(NEW_NOTE),
+              (payload, variables) => {
+               return payload.newNote.groupId === variables.groupId;
+              },
+            ),
+          }
+        
+      /*  newNote: {
             subscribe: (_, __, { pubsub }) => pubsub.asyncIterator('NEW_NOTE')
-        }
+        }*/
     }
 };

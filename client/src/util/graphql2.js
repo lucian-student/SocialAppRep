@@ -34,8 +34,12 @@ mutation createGroupedNote(
 `;
 
 export const GROUPED_NOTE_SUBSCRIPTION = gql`
-subscription{
-  newNote{
+subscription newNote(
+  $groupId:ID!
+){
+  newNote(
+    groupId:$groupId
+  ){
     id
     grouped
     groupId

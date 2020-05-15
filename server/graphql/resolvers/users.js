@@ -70,7 +70,7 @@ module.exports = {
             }
 
             //creating user
-            password = await bcrypt.hash(password, 10);
+            password = await bcrypt.hash(password, 20);
 
             const newUser = User({
                 email,
