@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { UserInputError } = require('apollo-server');
 
-const { SECRET_KEY } = require('../../config');
+const { SECRET_KEY, SECRET_KEY2 } = require('../../config');
 const { validateRegisterInput, validateLoginInput } = require('../../utils/validators');
 
 function generatetoken(user) {
@@ -14,9 +14,17 @@ function generatetoken(user) {
             email: user.email,
             username: user.username
         }
-        , SECRET_KEY, { expiresIn: '1h' });
+        , SECRET_KEY,{expiresIn:'1d'});
 }
-
+/*function refreshedToken(user) {
+    return jwt.sign(
+        {
+            id: user.id,
+            email: user.email,
+            username: user.username
+        }
+        , SECRET_KEY2);
+}*/
 module.exports = {
     Mutation: {
         async login(_, { username, password }) {
@@ -42,10 +50,17 @@ module.exports = {
             }
             const token = generatetoken(user);
 
+            //pridat refresh token do  returneni
+
+           // const refreshToken = refreshedToken(user);
+           
+         
             return {
                 ...user._doc,
                 id: user._id,
                 token
+               
+              
             }
         },
         async register(_, {
@@ -70,7 +85,7 @@ module.exports = {
             }
 
             //creating user
-            password = await bcrypt.hash(password, 20);
+            password = await bcrypt.hash(password, 10);
 
             const newUser = User({
                 email,
@@ -82,6 +97,8 @@ module.exports = {
             const res = await newUser.save();
 
             const token = generatetoken(res);
+
+            //const refreshToken = refreshedToken(res);
 
             return {
                 ...res._doc,
@@ -95,6 +112,7 @@ module.exports = {
             try {
                 const user = await User.findById(userId);
                 if (user) {
+                    
                     return user;
                 } else {
                     throw new Error('user doesnt exist');

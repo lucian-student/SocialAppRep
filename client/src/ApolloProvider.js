@@ -36,7 +36,7 @@ const link = split(
   );
 
 const authLink = setContext(() => {
-    const token = localStorage.getItem('jwtToken');
+    const token = localStorage.getItem("jwtToken");
     return {
         headers: {
             Authorization: token ? `Bearer ${token}` : ''

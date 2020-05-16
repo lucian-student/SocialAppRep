@@ -28,7 +28,8 @@ function Login(props) {
             props.history.push('/home');
         },
         onError(err) {
-            setErrors(err.graphQLErrors[0].extensions.exception.errors);
+           setErrors(err.graphQLErrors[0].extensions.exception.errors);
+          
         },
         variables: values
     });
@@ -83,6 +84,7 @@ mutation login(
       username
       createdAt
       token
+      
         
     }
 }

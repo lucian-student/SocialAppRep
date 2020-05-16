@@ -20,6 +20,7 @@ type User{
     id:ID!
     email:String!
     token:String!
+    refreshToken:String!
     username:String!
     createdAt:String!
     groups:[UserGroup]!
@@ -63,13 +64,14 @@ input RegisterInput{
     }
 
     type Mutation{
-        register(registerInput:RegisterInput): User!
-        login(username:String!,password:String!):User!
+        register(registerInput:RegisterInput): User
+        login(username:String!,password:String!):User
 
         createNote(content:String!):Note!
         deleteNote(noteId:ID!):String!
         editNote(noteId:ID!,content:String!):Note!
         createGroupedNote(content:String!,groupId:String!):Note!
+        refetchQuery:String!
         
         createRequest(username:String!,groupId:ID!,groupName:String!):User!
         deleteRequest(requestId:ID!):User!

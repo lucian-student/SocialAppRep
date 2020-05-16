@@ -49,3 +49,9 @@ subscription newNote(
   }
 }
 `;
+
+export const REFETCH_QUERY_MUTATION = gql`
+mutation refetchQuery{
+  refetchQuery
+}
+`;

@@ -1,20 +1,22 @@
 import React, { useReducer, createContext } from 'react';
 import jwtDecode from 'jwt-decode';
+import jwt from 'jsonwebtoken';
+
+
+
 
 const initialState = {
     user: null
 }
 
-if (localStorage.getItem('jwtToken')) {
-
-    const decodedToken = jwtDecode(localStorage.getItem('jwtToken'));
-
-    if (decodedToken.exp * 1000 < (Date.now())) {
 
 
-        localStorage.removeItem('jwtToken');
+if (localStorage.getItem("jwtToken")) {
 
+    const decodedToken = jwtDecode(localStorage.getItem("jwtToken"));
 
+    if (decodedToken.exp * 1000 < Date.now()-60) {
+        localStorage.removeItem("jwtToken");
     } else {
         initialState.user = decodedToken;
     }
@@ -53,6 +55,7 @@ function AuthProvider(props) {
 
     function login(userData) {
         localStorage.setItem("jwtToken", userData.token);
+        localStorage.setItem("jwtRefresh",userData.refreshToken);
         dispatch({
             type: 'LOGIN',
             payload: userData
@@ -61,6 +64,7 @@ function AuthProvider(props) {
 
     function logout() {
         localStorage.removeItem("jwtToken");
+        localStorage.removeItem("jwtRefresh");
         dispatch({
             type: 'LOGOUT'
         });

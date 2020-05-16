@@ -133,6 +133,9 @@ module.exports = {
 
             return note;
 
+        },
+        async refetchQuery(_,__){
+            return "hello";
         }
     },
     Subscription: {

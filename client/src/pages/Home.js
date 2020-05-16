@@ -10,7 +10,7 @@ import { FETCH_NOTES_QUERY } from '../util/graphql';
 
 
 
-function Home() {
+function Home(props) {
 
   let notes = '';
 

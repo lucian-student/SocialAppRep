@@ -5,10 +5,11 @@ const {SECRET_KEY} = require('../config');
 module.exports = (context) =>{
     const authHeader = context.req.headers.authorization;
     if(authHeader){
-        const token = authHeader.split('Bearer ')[1];
-        if(token){
+        const accesToken = authHeader.split('Bearer ')[1];
+        if(accesToken){
             try{
-                const user = jwt.verify(token,SECRET_KEY);
+                const user = jwt.verify(accesToken,SECRET_KEY);
+                console.log(accesToken);
                 return user;
             }catch(err){
                 throw new AuthentactionError(err);
