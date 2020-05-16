@@ -4,9 +4,9 @@ import { GET_GROUP_QUERY } from '../util/graphql';
 import { useQuery, useSubscription, useLazyQuery, useMutation } from '@apollo/react-hooks';
 import { FETCH_GROUPED_NOTES_QUERY, GROUPED_NOTE_SUBSCRIPTION, REFETCH_QUERY_MUTATION } from '../util/graphql2';
 import GroupedNoteForm from '../components/GroupedNoteForm';
-import { Grid, Dropdown, Menu,Button } from 'semantic-ui-react';
+import { Grid, Dropdown, Menu, Button } from 'semantic-ui-react';
 import NoteCard from '../components/NoteCard';
-import {AuthContext} from '../context/auth';
+import { AuthContext } from '../context/auth';
 
 
 
@@ -14,7 +14,7 @@ import {AuthContext} from '../context/auth';
 function GroupPage(props) {
     const groupId = props.match.params.groupId;
 
-    const {user} = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
     const { data, loading, error } = useQuery(GET_GROUP_QUERY, {
         variables: {
@@ -41,64 +41,32 @@ function GroupPage(props) {
     }
     //subscription place
 
-    const [refetchQuery] = useMutation(REFETCH_QUERY_MUTATION, {
-        refetchQueries: [{
-            query: FETCH_GROUPED_NOTES_QUERY,
-            variables: { groupId },
-        }]
-    });
-
-   // const [dataSubbed,setDataSubbed] = useState(true);
-
-  
-
-   /* const noteSub = useSubscription(GROUPED_NOTE_SUBSCRIPTION, {
-        variables: {
-            groupId
-        },
-        shouldResubscribe:true,
-
-    });
-
-    function refetchQueryMethod(){
-        refetchQuery();
-    }
-   
-    {!noteSub.loading&&noteSub.data.newNote.username!==user.username&&(
-        <Button onClick={refetchQueryMethod}>
-                click to recive new data
-        </Button>
-    )}*/
-
     const noteSub = useSubscription(GROUPED_NOTE_SUBSCRIPTION, {
-        variables:{
-            groupId:groupId
+        variables: {
+            groupId: groupId
         },
 
         onSubscriptionData: ({ client, subscriptionData }) => {
-          // Client is an instance of Apollo client.
-          // It has cache proxy method used in the `update` option in mutations.
-        // Please look at: https://www.apollographql.com/docs/react/essentials/mutations#update
-        /* const data3 = client.readQuery({
-            query: GROUPED_NOTE_SUBSCRIPTION,
-            variables: { groupId}
-          });
-          client.writeQuery({
-            query: GROUPED_NOTE_SUBSCRIPTION,
-            variables: { groupId},
-            data: {getGroupedNotes:data3.getGroupedNotes.unshift(subscriptionData.newNote)}
-          });*/
-          console.log("data");
-          refetchQuery();
+
+            const data3 = client.readQuery({
+                query: GROUPED_NOTE_SUBSCRIPTION,
+                variables: { groupId }
+            });
+            client.writeQuery({
+                query: GROUPED_NOTE_SUBSCRIPTION,
+                variables: { groupId },
+                data: { getGroupedNotes: [subscriptionData.data3.newNote, ...data3.getGroupedNotes] }
+            });
+            console.log("data");
         }
-      });
-if(noteSub.loading){
-    console.log(noteSub.loading);
-}else if(noteSub.error){
-    console.log(noteSub.error);
-}else{
-    console.log("yellow");
-}
+    });
+    if (noteSub.loading) {
+        console.log(noteSub.loading);
+    } else if (noteSub.error) {
+        console.log(noteSub.error);
+    } else {
+        console.log("yellow");
+    }
 
 
 
@@ -126,7 +94,7 @@ if(noteSub.loading){
             <div>
                 <div style={{ display: 'inline' }}>
                     <h1 style={{ display: 'inline' }}>welcome to group {groupId}</h1>
-                  
+
                 </div>
                 <Menu compact>
                     <Dropdown text='group members' options={options} simple item />
