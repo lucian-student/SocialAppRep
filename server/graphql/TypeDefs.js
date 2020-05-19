@@ -86,6 +86,7 @@ input RegisterInput{
 
     type Subscription{
         newNote(groupId:ID!):Note
+        removeNote(groupId:ID!):Note
     }
     
 `;

@@ -4,6 +4,7 @@ const { AuthentactionError } = require('apollo-server');
 const { withFilter, } = require('apollo-server');
 
 const NEW_NOTE = 'NEW_NOTE';
+const REMOVE_NOTE = 'REMOVE_NOTE';
 
 module.exports = {
     Query: {
@@ -70,8 +71,13 @@ module.exports = {
             try {
                 const note = await Note.findById(noteId);
                 if (user.username = note.username) {
+                    const groupId = note.groupId;
                     await note.delete();
 
+                    context.pubsub.publish(REMOVE_NOTE, {
+                        groupId:groupId ,
+                        removeNote: note
+                    });
 
 
                     return 'note was deleted';
@@ -144,6 +150,14 @@ module.exports = {
                 (_, __, { pubsub }) => pubsub.asyncIterator(NEW_NOTE),
                 (payload, variables) => {
                     return payload.newNote.groupId === variables.groupId;
+                },
+            ),
+        },
+        removeNote: {
+            subscribe: withFilter(
+                (_, __, { pubsub }) => pubsub.asyncIterator(REMOVE_NOTE),
+                (payload, variables) => {
+                    return payload.removeNote.groupId === variables.groupId;
                 },
             ),
         }

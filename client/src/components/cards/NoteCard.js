@@ -38,18 +38,7 @@ function NoteCard({ note: { username, createdAt, id, content, grouped, groupId }
                     variables: { username: persistentUsername },
                     data: { getNotes: data.getNotes.filter(n => n.id !== id) }
                 });
-            } else {
-                const data2 = proxy.readQuery({
-                    query: FETCH_GROUPED_NOTES_QUERY,
-                    variables: { groupId: groupId }
-                });
-                proxy.writeQuery({
-                    query: FETCH_GROUPED_NOTES_QUERY,
-                    variables: { groupId: groupId },
-                    data: { getGroupedNotes: data2.getGroupedNotes.filter(n => n.id !== id) }
-                });
-
-            }
+            } 
 
         },/*
          refetchQueries: [{

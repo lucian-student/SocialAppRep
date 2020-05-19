@@ -55,3 +55,20 @@ mutation refetchQuery{
   refetchQuery
 }
 `;
+
+export const REMOVE_NOTE_SUBSCRIPTION = gql`
+subscription removeNote(
+  $groupId:ID!
+){
+  removeNote(
+    groupId:$groupId
+  ){
+    id
+    grouped
+    groupId
+    username
+    createdAt
+    content
+  }
+}
+`;

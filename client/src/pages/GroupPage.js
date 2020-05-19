@@ -1,8 +1,8 @@
 import React, {useContext } from 'react';
 import RequestForm from '../components/forms/RequestForm';
 import { GET_GROUP_QUERY } from '../util/graphql';
-import { useQuery, useSubscription, useLazyQuery, useMutation } from '@apollo/react-hooks';
-import { FETCH_GROUPED_NOTES_QUERY, GROUPED_NOTE_SUBSCRIPTION, REFETCH_QUERY_MUTATION } from '../util/graphql2';
+import { useQuery, useSubscription } from '@apollo/react-hooks';
+import { FETCH_GROUPED_NOTES_QUERY, GROUPED_NOTE_SUBSCRIPTION,REMOVE_NOTE_SUBSCRIPTION } from '../util/graphql2';
 import GroupedNoteForm from '../components/forms/GroupedNoteForm';
 import { Grid, Dropdown, Menu, Button } from 'semantic-ui-react';
 import NoteCard from '../components/cards/NoteCard';
@@ -68,8 +68,27 @@ function GroupPage(props) {
     } else {
         console.log("yellow");
     }
+ // removeSubscription
+ const removeNoteSub = useSubscription(REMOVE_NOTE_SUBSCRIPTION, {
+    variables: {
+        groupId: groupId
+    },
 
+    onSubscriptionData: ({ client, subscriptionData }) => {
 
+       const data4= client.readQuery({
+            query: FETCH_GROUPED_NOTES_QUERY,
+            variables: { groupId }
+        });
+        client.writeQuery({
+            query: FETCH_GROUPED_NOTES_QUERY,
+            variables: { groupId },
+            data: { getGroupedNotes: data4.getGroupedNotes.filter(n => n.id !== subscriptionData.data.removeNote.id) }
+        });
+        console.log(subscriptionData.data);
+    
+    }
+});
 
 
 
