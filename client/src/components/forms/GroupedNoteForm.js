@@ -1,7 +1,7 @@
 import React from 'react';
-import { useForm } from '../util/hooks';
+import { useForm } from '../../util/hooks';
 import { useMutation } from '@apollo/react-hooks';
-import { CREATE_GROUPED_NOTE_MUTATION } from '../util/graphql2';
+import { CREATE_GROUPED_NOTE_MUTATION } from '../../util/graphql2';
 import { Form, Button } from 'semantic-ui-react';
 
 

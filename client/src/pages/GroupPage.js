@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react';
-import RequestForm from '../components/RequestForm';
+import React, {useContext } from 'react';
+import RequestForm from '../components/forms/RequestForm';
 import { GET_GROUP_QUERY } from '../util/graphql';
 import { useQuery, useSubscription, useLazyQuery, useMutation } from '@apollo/react-hooks';
 import { FETCH_GROUPED_NOTES_QUERY, GROUPED_NOTE_SUBSCRIPTION, REFETCH_QUERY_MUTATION } from '../util/graphql2';
-import GroupedNoteForm from '../components/GroupedNoteForm';
+import GroupedNoteForm from '../components/forms/GroupedNoteForm';
 import { Grid, Dropdown, Menu, Button } from 'semantic-ui-react';
-import NoteCard from '../components/NoteCard';
+import NoteCard from '../components/cards/NoteCard';
 import { AuthContext } from '../context/auth';
 
 
@@ -48,16 +48,17 @@ function GroupPage(props) {
 
         onSubscriptionData: ({ client, subscriptionData }) => {
 
-            const data3 = client.readQuery({
-                query: GROUPED_NOTE_SUBSCRIPTION,
+           const data3 = client.readQuery({
+                query: FETCH_GROUPED_NOTES_QUERY,
                 variables: { groupId }
             });
             client.writeQuery({
-                query: GROUPED_NOTE_SUBSCRIPTION,
+                query: FETCH_GROUPED_NOTES_QUERY,
                 variables: { groupId },
-                data: { getGroupedNotes: [subscriptionData.data3.newNote, ...data3.getGroupedNotes] }
+                data: { getGroupedNotes: [subscriptionData.data.newNote, ...data3.getGroupedNotes] }
             });
-            console.log("data");
+            console.log(subscriptionData.data);
+        
         }
     });
     if (noteSub.loading) {

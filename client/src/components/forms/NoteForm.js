@@ -1,10 +1,10 @@
 import React, { useContext,useState } from 'react';
 import gql from 'graphql-tag';
 import { Form, Button } from 'semantic-ui-react';
-import { useForm } from '../util/hooks';
+import { useForm } from '../../util/hooks';
 import { useMutation } from '@apollo/react-hooks';
-import { FETCH_NOTES_QUERY } from '../util/graphql';
-import { AuthContext } from '../context/auth';
+import { FETCH_NOTES_QUERY } from '../../util/graphql';
+import { AuthContext } from '../../context/auth';
 
 
 function NoteForm() {

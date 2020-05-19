@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { Card, Icon } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 import {useMutation} from '@apollo/react-hooks';
-import {LEAVE_GROUP_MUTATION,FETCH_UPDATABLE_USER_DATA} from '../util/graphql';
-import {AuthContext} from '../context/auth'
+import {LEAVE_GROUP_MUTATION,FETCH_UPDATABLE_USER_DATA} from '../../util/graphql';
+import {AuthContext} from '../../context/auth'
 
 function GroupCard({ group: { groupId, groupName, id } }) {
 

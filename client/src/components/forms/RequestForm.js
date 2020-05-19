@@ -1,8 +1,8 @@
 import React,{useState} from 'react';
 import { Form, Button } from 'semantic-ui-react';
-import {useForm} from '../util/hooks';
+import {useForm} from '../../util/hooks';
 import {useMutation} from '@apollo/react-hooks';
-import {CREATE_GROUP_REQUEST_MUTATION} from '../util/graphql';
+import {CREATE_GROUP_REQUEST_MUTATION} from '../../util/graphql';
 
 function RequestForm({groupParams:{id,name}}) {
 

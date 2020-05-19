@@ -3,7 +3,7 @@ const checkAuth = require('../../utils/check-auth');
 const { AuthentactionError } = require('apollo-server');
 const { withFilter, } = require('apollo-server');
 
-const NEW_NOTE ='NEW_NOTE';
+const NEW_NOTE = 'NEW_NOTE';
 
 module.exports = {
     Query: {
@@ -72,8 +72,8 @@ module.exports = {
                 if (user.username = note.username) {
                     await note.delete();
 
-                    
-                
+
+
                     return 'note was deleted';
 
                 } else {
@@ -93,9 +93,9 @@ module.exports = {
                 if (note) {
 
                     //live update action here
-                   /* context.pubsub.publish('NEW_NOTE', {
-                        newNote: note
-                    });*/
+                    /* context.pubsub.publish('NEW_NOTE', {
+                         newNote: note
+                     });*/
                     //end of live update action here
 
                     return note;
@@ -125,7 +125,7 @@ module.exports = {
             //live update action here
             // if it doesnt work add note.dataValues
             context.pubsub.publish(NEW_NOTE, {
-                groupId:groupId,
+                groupId: groupId,
                 newNote: note
             });
             //end of live update action here
@@ -134,22 +134,18 @@ module.exports = {
             return note;
 
         },
-        async refetchQuery(_,__){
+        async refetchQuery(_, __) {
             return "hello";
         }
     },
     Subscription: {
         newNote: {
             subscribe: withFilter(
-              (_,__,{pubsub}) => pubsub.asyncIterator(NEW_NOTE),
-              (payload, variables) => {
-               return payload.newNote.groupId === variables.groupId;
-              },
+                (_, __, { pubsub }) => pubsub.asyncIterator(NEW_NOTE),
+                (payload, variables) => {
+                    return payload.newNote.groupId === variables.groupId;
+                },
             ),
-          }
-        
-      /*  newNote: {
-            subscribe: (_, __, { pubsub }) => pubsub.asyncIterator('NEW_NOTE')
-        }*/
+        }
     }
 };

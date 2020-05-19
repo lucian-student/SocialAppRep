@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import { CREATE_GROUP_MUTATION, FETCH_UPDATABLE_USER_DATA } from '../util/graphql';
-import { AuthContext } from '../context/auth';
-import { useForm } from '../util/hooks'; 
+import { CREATE_GROUP_MUTATION, FETCH_UPDATABLE_USER_DATA } from '../../util/graphql';
+import { AuthContext } from '../../context/auth';
+import { useForm } from '../../util/hooks'; 
 import {Form,Button} from 'semantic-ui-react';
 
 

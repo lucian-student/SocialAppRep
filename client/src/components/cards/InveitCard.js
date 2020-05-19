@@ -4,9 +4,9 @@ import {
     FETCH_UPDATABLE_USER_DATA,
     JOIN_GROUP_MUTATION,
     DELETE_REQUEST_MUTATION
-} from '../util/graphql';
+} from '../../util/graphql';
 import {useMutation} from '@apollo/react-hooks';
-import {AuthContext} from '../context/auth';
+import {AuthContext} from '../../context/auth';
 
 
 function InveitCard({ req: { groupId, groupName,id, username } }) {

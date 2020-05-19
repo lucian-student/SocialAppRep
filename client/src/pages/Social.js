@@ -3,9 +3,9 @@ import { AuthContext } from '../context/auth';
 import { FETCH_UPDATABLE_USER_DATA } from '../util/graphql';
 import { useQuery } from '@apollo/react-hooks';
 import { Card } from 'semantic-ui-react';
-import GroupCard from '../components/GroupCard';
-import InveitCard from '../components/InveitCard';
-import GroupForm from '../components/GroupForm';
+import GroupCard from '../components/cards/GroupCard';
+import InveitCard from '../components/cards/InveitCard';
+import GroupForm from '../components/forms/GroupForm';
 
 
 function Social() {

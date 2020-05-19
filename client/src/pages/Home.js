@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Grid } from 'semantic-ui-react';
 
-import NoteCard from '../components/NoteCard';
+import NoteCard from '../components/cards/NoteCard';
 import { AuthContext } from '../context/auth';
-import NoteForm from '../components/NoteForm';
+import NoteForm from '../components/forms/NoteForm';
 import { FETCH_NOTES_QUERY } from '../util/graphql';
 
 
