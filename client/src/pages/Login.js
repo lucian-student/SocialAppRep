@@ -1,9 +1,9 @@
-import React,{useState,useContext} from 'react';
+import React, { useState, useContext } from 'react';
 import { Form, Button } from 'semantic-ui-react';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import { useForm } from '../util/hooks';
-import {AuthContext} from '../context/auth';
+import { AuthContext } from '../context/auth';
 
 function Login(props) {
     let persistentUsername = '';
@@ -20,7 +20,7 @@ function Login(props) {
     });
 
     const [loginUser, { loading }] = useMutation(LOGIN_USER, {
-        update(_,{data:{login:userData}}) {
+        update(_, { data: { login: userData } }) {
             console.log(userData);
             persistentUsername = values.username;
             context.login(userData);
@@ -28,8 +28,8 @@ function Login(props) {
             props.history.push('/home');
         },
         onError(err) {
-           setErrors(err.graphQLErrors[0].extensions.exception.errors);
-          
+            setErrors(err.graphQLErrors[0].extensions.exception.errors);
+
         },
         variables: values
     });
@@ -40,34 +40,35 @@ function Login(props) {
 
 
     return (
-        <div>
-            <h1>Login fik</h1>
-            <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
-                <h1>Login</h1>
-                <Form.Input
-                    label="Username"
-                    placeholder="Username.."
-                    name="username"
-                    type="text"
-                    error={errors.username}
-                    value={values.username}
-                    onChange={onChange}
-                />
+        <div style={{ display: "flex" }}>
+            <div style={{ margin: "auto", width: '60%' }}>
+                <h1>Login fik</h1>
+                <Form onSubmit={onSubmit} noValidate className={loading ? 'loading' : ''}>
+                    <h1>Login</h1>
+                    <Form.Input
+                        label="Username"
+                        placeholder="Username.."
+                        name="username"
+                        type="text"
+                        error={errors.username}
+                        value={values.username}
+                        onChange={onChange}
+                    />
 
-                <Form.Input
-                    label="Password"
-                    placeholder="Password.."
-                    name="password"
-                    type="password"
-                    error={errors.password}
-                    value={values.password}
-                    onChange={onChange}
-                />
-                <Button type="submit" primary onClick={onSubmit}>
-                    Login
+                    <Form.Input
+                        label="Password"
+                        placeholder="Password.."
+                        name="password"
+                        type="password"
+                        error={errors.password}
+                        value={values.password}
+                        onChange={onChange}
+                    />
+                    <Button type="submit" primary onClick={onSubmit}>
+                        Login
                 </Button>
-            </Form>
-
+                </Form>
+            </div>
         </div>
     )
 }

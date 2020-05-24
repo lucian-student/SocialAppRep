@@ -51,10 +51,8 @@ function Social() {
 
 
             socialPage = (
-                <div>
-
-
-                    <div>
+                <div style={{ display: "flex" }}> 
+                    <div style={{ margin: "auto", width:'80%' }}>
                         <h1>welcome to socializing {user.username}</h1>
                         <GroupForm />
                         <h2 >These are groups u belong to:</h2>
@@ -64,9 +62,6 @@ function Social() {
                             </Card.Group>
                         ))
                         }
-                    </div>
-
-                    <div>
                         <h2 >These are group yours group inveits:</h2>
                         {groupRequests.map(req => (
                             <Card.Group key={req.id}>

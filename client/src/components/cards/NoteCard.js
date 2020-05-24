@@ -52,7 +52,7 @@ function NoteCard({ note: { username, createdAt, id, content, grouped, groupId }
 
 
     return (
-        <div>
+        <div className='noteCard'>
             <Link to={`/${id}`}>
                 <Card
                     link

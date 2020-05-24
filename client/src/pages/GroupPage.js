@@ -1,8 +1,8 @@
-import React, {useContext } from 'react';
+import React, { useContext } from 'react';
 import RequestForm from '../components/forms/RequestForm';
 import { GET_GROUP_QUERY } from '../util/graphql';
 import { useQuery, useSubscription } from '@apollo/react-hooks';
-import { FETCH_GROUPED_NOTES_QUERY, GROUPED_NOTE_SUBSCRIPTION,REMOVE_NOTE_SUBSCRIPTION } from '../util/graphql2';
+import { FETCH_GROUPED_NOTES_QUERY, GROUPED_NOTE_SUBSCRIPTION, REMOVE_NOTE_SUBSCRIPTION } from '../util/graphql2';
 import GroupedNoteForm from '../components/forms/GroupedNoteForm';
 import { Grid, Dropdown, Menu, Button } from 'semantic-ui-react';
 import NoteCard from '../components/cards/NoteCard';
@@ -48,7 +48,7 @@ function GroupPage(props) {
 
         onSubscriptionData: ({ client, subscriptionData }) => {
 
-           const data3 = client.readQuery({
+            const data3 = client.readQuery({
                 query: FETCH_GROUPED_NOTES_QUERY,
                 variables: { groupId }
             });
@@ -58,7 +58,7 @@ function GroupPage(props) {
                 data: { getGroupedNotes: [subscriptionData.data.newNote, ...data3.getGroupedNotes] }
             });
             console.log(subscriptionData.data);
-        
+
         }
     });
     if (noteSub.loading) {
@@ -68,27 +68,27 @@ function GroupPage(props) {
     } else {
         console.log("yellow");
     }
- // removeSubscription
- const removeNoteSub = useSubscription(REMOVE_NOTE_SUBSCRIPTION, {
-    variables: {
-        groupId: groupId
-    },
+    // removeSubscription
+    const removeNoteSub = useSubscription(REMOVE_NOTE_SUBSCRIPTION, {
+        variables: {
+            groupId: groupId
+        },
 
-    onSubscriptionData: ({ client, subscriptionData }) => {
+        onSubscriptionData: ({ client, subscriptionData }) => {
 
-       const data4= client.readQuery({
-            query: FETCH_GROUPED_NOTES_QUERY,
-            variables: { groupId }
-        });
-        client.writeQuery({
-            query: FETCH_GROUPED_NOTES_QUERY,
-            variables: { groupId },
-            data: { getGroupedNotes: data4.getGroupedNotes.filter(n => n.id !== subscriptionData.data.removeNote.id) }
-        });
-        console.log(subscriptionData.data);
-    
-    }
-});
+            const data4 = client.readQuery({
+                query: FETCH_GROUPED_NOTES_QUERY,
+                variables: { groupId }
+            });
+            client.writeQuery({
+                query: FETCH_GROUPED_NOTES_QUERY,
+                variables: { groupId },
+                data: { getGroupedNotes: data4.getGroupedNotes.filter(n => n.id !== subscriptionData.data.removeNote.id) }
+            });
+            console.log(subscriptionData.data);
+
+        }
+    });
 
 
 
@@ -111,35 +111,36 @@ function GroupPage(props) {
         ));
 
         return (
-            <div>
-                <div style={{ display: 'inline' }}>
-                    <h1 style={{ display: 'inline' }}>welcome to group {groupId}</h1>
+            <div style={{ display: "flex" }}>
+                <div style={{ margin: "auto", width:'80%' }}>
+                    <div style={{ display: 'inline' }}>
+                        <h1 style={{ display: 'inline' }}>welcome to group {groupId}</h1>
 
+                    </div>
+                    <Menu compact>
+                        <Dropdown text='group members' options={options} simple item />
+                    </Menu>
+                    <RequestForm groupParams={groupParams} />
+                    <GroupedNoteForm id={id} />
+                    <Grid columns={1}>
+                        <Grid.Row >
+                            <h1>group notes</h1>
+                        </Grid.Row>
+                        {fetchNotes.loading ? (
+                            <h1>loading notes..</h1>
+                        ) : (
+                                notes.newData &&
+                                notes.newData.map(note => (
+
+                                    <Grid.Column key={note.id} style={{ marginBottom: 20 }}>
+                                        <NoteCard note={note} />
+                                    </Grid.Column>
+
+                                ))
+                            )}
+                    </Grid>
                 </div>
-                <Menu compact>
-                    <Dropdown text='group members' options={options} simple item />
-                </Menu>
-                <RequestForm groupParams={groupParams} />
-                <GroupedNoteForm id={id} />
-                <Grid columns={3}>
-                    <Grid.Row >
-                        <h1>group notes</h1>
-                    </Grid.Row>
-                    {fetchNotes.loading ? (
-                        <h1>loading notes..</h1>
-                    ) : (
-                            notes.newData &&
-                            notes.newData.map(note => (
-
-                                <Grid.Column key={note.id} style={{ marginBottom: 20 }}>
-                                    <NoteCard note={note} />
-                                </Grid.Column>
-
-                            ))
-                        )}
-                </Grid>
             </div>
-
         )
     }
 }

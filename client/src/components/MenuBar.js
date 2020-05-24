@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/auth';
 
 
-function MenuBar() {
+function MenuBar(props) {
 
     const { user, logout } = useContext(AuthContext);
 
@@ -17,6 +17,10 @@ function MenuBar() {
     const [activeItem, setActiveItem] = useState(path);
 
     const handleItemClick = ({ name }) => setActiveItem(name);
+
+    function handleLogout(){
+        logout();
+    }
 
     const menuBar = user ? (
         <div>
@@ -36,13 +40,16 @@ function MenuBar() {
                         onClick={handleItemClick}
                     />
                 </Link>
-
+                
                 <Menu.Menu position='right'>
+                  
                     <Menu.Item
                         name='logout'
-                        onClick={logout}
+                        onClick={handleLogout}
                     />
+               
                 </Menu.Menu>
+               
             </Menu>
 
         </div>

@@ -7,4 +7,17 @@
 }
 .hoverIcon{
  margin-inline-start: 10px;
+ float: right;
+}
+
+.noteCard{
+  max-width: 400px;
+}
+
+.card{
+  max-width: 400px;
+  transition: all .2s ease-in-out;
+}
+.card:hover{
+  transform: scale(1.1);
 }

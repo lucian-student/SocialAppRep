@@ -82,7 +82,7 @@ function NotePage(props) {
                 {editiable
                     ?
                     <div style={{ display: "flex" }}>
-                        <div style={{ margin: "auto", width: 400 }}>
+                        <div style={{ margin: "auto", width: '60%'}}>
                             <h1>Note is  being edited</h1>
                             <Paper elevation={3}>
                                 <h1 >{username}</h1>

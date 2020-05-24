@@ -36,30 +36,36 @@ function Home(props) {
   console.log(notes);
 
   return (
+    <div style={{ display: "flex" }}>
+      <div style={{ margin: "auto", width:'80%' }}>
+        <Grid columns={1}>
+          <Grid.Row >
+            <h1>your personal notes</h1>
+          </Grid.Row>
+          {!loading && (
+            <Grid.Row>
+              <NoteForm />
+            </Grid.Row>
+          )}
 
-    <Grid columns={3}>
-      <Grid.Row >
-        <h1>your personal notes</h1>
-      </Grid.Row>
-      {user && (
-        <Grid.Column>
-          <NoteForm />
-        </Grid.Column>
-      )}
-      {loading ? (
-        <h1>loading notes..</h1>
-      ) : (
-          notes.data &&
-          notes.data.map(note => (
-  
-              <Grid.Column key={note.id} style={{ marginBottom: 20 }}>
-                <NoteCard note={note} />
-              </Grid.Column>
+          {loading ? (
+            <h1>loading notes..</h1>
 
-          ))
-        )}
-    </Grid>
+          ) : (
 
+              notes.data &&
+
+              notes.data.map(note => (
+
+                <Grid.Column key={note.id} style={{ marginBottom: 20 }}>
+                  <NoteCard note={note} />
+                </Grid.Column>
+
+              ))
+            )}
+        </Grid>
+      </div>
+    </div>
   )
 }
 

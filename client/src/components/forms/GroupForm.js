@@ -35,7 +35,6 @@ function GroupForm() {
 
     return (
         <div>
-            <div>Form for creating group</div>
             <Form onSubmit={onSubmit}>
                 <h2>create new group:</h2>
                 <Form.Field>
