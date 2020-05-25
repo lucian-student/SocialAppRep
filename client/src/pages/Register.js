@@ -8,13 +8,11 @@ import { AuthContext } from '../context/auth';
 
 function Register(props) {
 
-    let persistentUsername = '';
-
     const context = useContext(AuthContext);
 
     const [errors, setErrors] = useState({});
 
-    const { onChange, onSubmit, values } = useForm(registerUser, {
+    const { onChange, onSubmit, values } = useForm(registerUserCallback, {
         username: '',
         email: '',
         password: '',
@@ -23,11 +21,7 @@ function Register(props) {
 
     const [addUser, { loading }] = useMutation(REGISTER_USER, {
         update(_, { data: { register: userData } }) {
-            console.log(userData);
-            persistentUsername = values.username;
             context.login(userData);
-            console.log(persistentUsername);
-            props.history.push('/home');
         },
         onError(err) {
             setErrors(err.graphQLErrors[0].extensions.exception.errors);
@@ -35,7 +29,7 @@ function Register(props) {
         variables: values
     });
 
-    function registerUser() {
+    function registerUserCallback() {
         addUser();
     }
 
@@ -92,17 +86,17 @@ function Register(props) {
 
 const REGISTER_USER = gql`
   mutation register(
-    $username: String!
-    $email: String!
-    $password: String!
-    $confirmPassword: String!
+    $username: String!,
+    $email: String!,
+    $password: String!,
+    $confirmPassword: String!,
   ) {
     register(
       registerInput: {
-        username: $username
-        email: $email
-        password: $password
-        confirmPassword: $confirmPassword
+        username: $username,
+        email: $email,
+        password: $password,
+        confirmPassword: $confirmPassword,
       }
     ) {
         id
@@ -110,7 +104,6 @@ const REGISTER_USER = gql`
       username
       createdAt
       token
-      refreshToken
     }
   }
 `;

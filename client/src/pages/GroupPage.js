@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import RequestForm from '../components/forms/RequestForm';
 import { GET_GROUP_QUERY } from '../util/graphql';
 import { useQuery, useSubscription } from '@apollo/react-hooks';
@@ -7,6 +7,7 @@ import GroupedNoteForm from '../components/forms/GroupedNoteForm';
 import { Grid, Dropdown, Menu, Button } from 'semantic-ui-react';
 import NoteCard from '../components/cards/NoteCard';
 import { AuthContext } from '../context/auth';
+import NoteCard2 from '../components/cards/noteCard2';
 
 
 
@@ -89,10 +90,19 @@ function GroupPage(props) {
 
         }
     });
-
-
-
     //sub
+
+    //viewState
+    const [view, setView] = useState(false);
+
+    function handleNoteView(){
+        if (view) {
+            setView(false);
+          } else {
+            setView(true);
+          }
+    }
+
 
     if (loading) return <p>Loading...</p>
     if (error) return <p>Error.</p>
@@ -112,7 +122,7 @@ function GroupPage(props) {
 
         return (
             <div style={{ display: "flex" }}>
-                <div style={{ margin: "auto", width:'80%' }}>
+                <div style={{ margin: "auto", width: '80%' }}>
                     <div style={{ display: 'inline' }}>
                         <h1 style={{ display: 'inline' }}>welcome to group {groupId}</h1>
 
@@ -120,6 +130,16 @@ function GroupPage(props) {
                     <Menu compact>
                         <Dropdown text='group members' options={options} simple item />
                     </Menu>
+                    {view ? (
+                        <Button onClick={handleNoteView}>
+                            Set view to documents
+                        </Button>
+                    ) : (
+                            <Button onClick={handleNoteView}>
+                                Set view to messenger
+                            </Button>
+                        )
+                    }
                     <RequestForm groupParams={groupParams} />
                     <GroupedNoteForm id={id} />
                     <Grid columns={1}>
@@ -129,14 +149,26 @@ function GroupPage(props) {
                         {fetchNotes.loading ? (
                             <h1>loading notes..</h1>
                         ) : (
-                                notes.newData &&
-                                notes.newData.map(note => (
-
-                                    <Grid.Column key={note.id} style={{ marginBottom: 20 }}>
+                            
+                                (notes.newData && view ?
+                                    notes.newData.map(note => (
+                    
+                                      <Grid.Column key={note.id} style={{ marginBottom: 20 }}>
                                         <NoteCard note={note} />
-                                    </Grid.Column>
-
-                                ))
+                                      </Grid.Column>
+                    
+                                    )) : (
+                                      (notes.newData && !view ?
+                                        notes.newData.map(note => (
+                    
+                                          <Grid.Column key={note.id} style={{ marginBottom: 20 }}>
+                                            <NoteCard2 note={note} />
+                                          </Grid.Column>
+                    
+                                        )) : (
+                                          <div />
+                                        ))
+                                    ))
                             )}
                     </Grid>
                 </div>

@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, Component } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Grid } from 'semantic-ui-react';
+import { Grid, Button } from 'semantic-ui-react';
 
 import NoteCard from '../components/cards/NoteCard';
 import { AuthContext } from '../context/auth';
 import NoteForm from '../components/forms/NoteForm';
 import { FETCH_NOTES_QUERY } from '../util/graphql';
-
+import NoteCard2 from '../components/cards/noteCard2';
 
 
 
@@ -28,6 +28,16 @@ function Home(props) {
     }
   });
 
+  const [view, setView] = useState(false);
+  function handleNoteView() {
+    if (view) {
+      setView(false);
+    } else {
+      setView(true);
+    }
+  }
+
+
 
 
   if (data) {
@@ -37,10 +47,20 @@ function Home(props) {
 
   return (
     <div style={{ display: "flex" }}>
-      <div style={{ margin: "auto", width:'80%' }}>
+      <div style={{ margin: "auto", width: '80%' }}>
         <Grid columns={1}>
           <Grid.Row >
             <h1>your personal notes</h1>
+            {view ? (
+              <Button onClick={handleNoteView}>
+                Set view to documents
+              </Button>
+            ) : (
+                <Button onClick={handleNoteView}>
+                  Set view to messenger
+                </Button>
+              )
+            }
           </Grid.Row>
           {!loading && (
             <Grid.Row>
@@ -53,15 +73,26 @@ function Home(props) {
 
           ) : (
 
-              notes.data &&
+              (notes.data && view ?
+                notes.data.map(note => (
 
-              notes.data.map(note => (
+                  <Grid.Column key={note.id} style={{ marginBottom: 20 }}>
+                    <NoteCard note={note} />
+                  </Grid.Column>
 
-                <Grid.Column key={note.id} style={{ marginBottom: 20 }}>
-                  <NoteCard note={note} />
-                </Grid.Column>
+                )) : (
+                  (notes.data && !view ?
+                    notes.data.map(note => (
 
-              ))
+                      <Grid.Column key={note.id} style={{ marginBottom: 20 }}>
+                        <NoteCard2 note={note} />
+                      </Grid.Column>
+
+                    )) : (
+                      <div />
+                    ))
+                ))
+
             )}
         </Grid>
       </div>

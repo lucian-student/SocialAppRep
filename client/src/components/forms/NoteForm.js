@@ -21,15 +21,12 @@ function NoteForm() {
     }
 
     const { values, onChange, onSubmit } = useForm(createNoteCallback, {
-        content: ''
+        content: '',
+        noteName:''
     });
 
     const [createNote] = useMutation(CREATE_NOTE_MUTATION, {
         variables: values,
-        /* refetchQueries: [{
-            query: FETCH_NOTES_QUERY,
-             variables: {username: persistentUsername},
-           }],*/
         update(proxy, result) {
                 const data = proxy.readQuery({
                     query: FETCH_NOTES_QUERY,
@@ -41,6 +38,7 @@ function NoteForm() {
                     data: { getNotes: [result.data.createNote, ...data.getNotes] }
                 });
                 values.content='';
+                values.noteName='';
            
         },
         onError(err) {
@@ -58,6 +56,14 @@ function NoteForm() {
             <Form onSubmit={onSubmit}>
                 <h2>create new note:</h2>
                 <Form.Field>
+                <Form.Input
+                        placeholder="fikus notes"
+                        name="noteName"
+                        onChange={onChange}
+                        value={values.noteName}
+                        error={errors.noteName}
+                        
+                    />
                     <Form.TextArea
                         placeholder="fikus notes"
                         name="content"
@@ -65,7 +71,7 @@ function NoteForm() {
                         value={values.content}
                         error={errors.content}
                         
-                    />
+                    />             
                     <Button type="submit">
                         Submit
                         </Button>
@@ -78,15 +84,18 @@ function NoteForm() {
 
 const CREATE_NOTE_MUTATION = gql`
 mutation createNote(
-    $content:String!
+    $content:String!,
+    $noteName:String!
 ){
     createNote(
-        content:$content
+        content:$content,
+        noteName:$noteName
     ){
         id
         username
         content
         createdAt
+        noteName
     }
 }
 `;

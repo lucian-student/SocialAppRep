@@ -7,7 +7,9 @@ const noteSchema = new Schema({
     createdAt:String,
     // new additions
     grouped:Boolean,
-    groupId:String
+    groupId:String,
+    // newest addition
+    noteName:String
    
 });
 

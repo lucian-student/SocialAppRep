@@ -10,6 +10,7 @@ query getNotes(
     id
     content
     createdAt
+    noteName
   }
 }`;
 

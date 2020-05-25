@@ -11,23 +11,27 @@ query getGroupedNotes(
     groupId
     username
     content
+    noteName
   }
 }`;
 
 export const CREATE_GROUPED_NOTE_MUTATION = gql`
 mutation createGroupedNote(
     $content:String!,
-    $groupId:String!
+    $groupId:String!,
+    $noteName:String!
 ){
     createGroupedNote(
         content:$content,
         groupId:$groupId
+        noteName:$noteName
     ){
         id
     grouped
     groupId
     username
     content
+    noteName
     }
 }
 
@@ -46,6 +50,7 @@ subscription newNote(
     username
     createdAt
     content
+    noteName
   }
 }
 `;

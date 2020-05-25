@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Card, Button } from 'semantic-ui-react';
+import { Card, Button,Icon } from 'semantic-ui-react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/auth';
@@ -10,7 +10,7 @@ import { FETCH_NOTES_QUERY } from '../../util/graphql';
 import { FETCH_GROUPED_NOTES_QUERY } from '../../util/graphql2';
 //import {Button} from 'material-ui';
 
-function NoteCard({ note: { username, createdAt, id, content, grouped, groupId } }) {
+function NoteCard2({ note: { username, createdAt, id, content, grouped, groupId,noteName } }) {
     const { user } = useContext(AuthContext);
 
     let persistentUsername = '';
@@ -19,7 +19,7 @@ function NoteCard({ note: { username, createdAt, id, content, grouped, groupId }
         persistentUsername = user.username;
     }
 
-    
+
 
     const [deleteNote] = useMutation(DELETE_NOTE_MUTATION, {
         variables: {
@@ -38,7 +38,7 @@ function NoteCard({ note: { username, createdAt, id, content, grouped, groupId }
                     variables: { username: persistentUsername },
                     data: { getNotes: data.getNotes.filter(n => n.id !== id) }
                 });
-            } 
+            }
 
         },
         onError(err) {
@@ -49,30 +49,22 @@ function NoteCard({ note: { username, createdAt, id, content, grouped, groupId }
 
     return (
         <div className='noteCard'>
-            <Link to={`/${id}`}>
-                <Card
-                    link
-                    style={{ wordBreak: "break-all" }}
-                    header={username}
-                    meta={moment({ createdAt }).fromNow()}
-                    description={content}
-                    fluid
-                >
-                </Card>
-            </Link>
-            {user && user.username === username ? (
-                <div>
 
-                    <Button onClick={deleteNote}
-                    >
-                        Delete
-                    </Button>
-
-
+            <Card
+                fluid
+                color='green'
+                className="card"
+            >
+                <div style={{ display: 'inline' }}>
+                    <Link to={`/${id}`}>
+                        <Card.Header style={{ display: 'inline' }}><h3 style={{ display: 'inline' }}>{username}:{noteName}</h3></Card.Header>
+                    </Link>
+                    {user && user.username === username && (
+                        <Icon link name='delete' className="hoverIcon" size='huge' onClick={deleteNote}></Icon>
+                    )}
                 </div>
-            ) : (
-                    <div />
-                )}
+
+            </Card>
 
         </div>
     )
@@ -90,4 +82,4 @@ mutation deleteNote(
 
 `;
 
-export default NoteCard
+export default NoteCard2

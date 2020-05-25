@@ -2,6 +2,8 @@ const Note = require('../../models/note');
 const checkAuth = require('../../utils/check-auth');
 const { AuthentactionError } = require('apollo-server');
 const { withFilter, } = require('apollo-server');
+const { validateCreateNote } = require('../../utils/validators');
+const { UserInputError } = require('apollo-server');
 
 const NEW_NOTE = 'NEW_NOTE';
 const REMOVE_NOTE = 'REMOVE_NOTE';
@@ -45,24 +47,32 @@ module.exports = {
     }
     ,
     Mutation: {
-        async createNote(_, { content }, context) {
+        async createNote(_, { content, noteName }, context) {
             const user = checkAuth(context);
 
-            const newNote = new Note({
-                content,
-                user: user.id,
-                username: user.username,
-                createdAt: new Date().toISOString(),
-                grouped: false,
-                groupId: 'none'
-            });
-            const note = await newNote.save();
+            const { errors, valid } = validateCreateNote(noteName);
 
+            if (valid) {
+
+                const newNote = new Note({
+                    content,
+                    user: user.id,
+                    username: user.username,
+                    createdAt: new Date().toISOString(),
+                    grouped: false,
+                    groupId: 'none',
+                    noteName: noteName
+                });
+                const note = await newNote.save();
+                return note;
+            } else {
+                throw new UserInputError('not valid inputs', { errors });
+            }
             /* context.pubsub.publish('NEW_NOTE', {
                  newNote: note
              });*/
 
-            return note;
+
         },
         async deleteNote(_, { noteId }, context) {
 
@@ -75,7 +85,7 @@ module.exports = {
                     await note.delete();
 
                     context.pubsub.publish(REMOVE_NOTE, {
-                        groupId:groupId ,
+                        groupId: groupId,
                         removeNote: note
                     });
 
@@ -115,29 +125,35 @@ module.exports = {
                 throw new Error(err);
             }
         },
-        async createGroupedNote(_, { content, groupId }, context) {
+        async createGroupedNote(_, { content, groupId, noteName }, context) {
             const user = checkAuth(context);
 
-            const newNote = new Note({
-                content,
-                user: user.id,
-                username: user.username,
-                createdAt: new Date().toISOString(),
-                grouped: true,
-                groupId: groupId
-            });
-            const note = await newNote.save();
+            const { errors, valid } = validateCreateNote(noteName);
+            if (valid) {
+                const newNote = new Note({
+                    content,
+                    user: user.id,
+                    username: user.username,
+                    createdAt: new Date().toISOString(),
+                    grouped: true,
+                    groupId: groupId,
+                    noteName: noteName
+                });
+                const note = await newNote.save();
 
-            //live update action here
-            // if it doesnt work add note.dataValues
-            context.pubsub.publish(NEW_NOTE, {
-                groupId: groupId,
-                newNote: note
-            });
-            //end of live update action here
+                //live update action here
+                // if it doesnt work add note.dataValues
+                context.pubsub.publish(NEW_NOTE, {
+                    groupId: groupId,
+                    newNote: note
+                });
+                //end of live update action here
 
 
-            return note;
+                return note;
+            } else {
+                throw new UserInputError('not valid inputs', { errors });
+            }
 
         },
         async refetchQuery(_, __) {

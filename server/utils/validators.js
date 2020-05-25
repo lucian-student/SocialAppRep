@@ -59,3 +59,15 @@ module.exports.validateRequestInput=(username)=>{
         valid:Object.keys(errors).length<1
     };
 }
+
+module.exports.validateCreateNote=(noteName)=>{
+    const errors = {};
+    if(noteName.trim()===''){
+        errors.noteName = 'noteName is empty'
+    }
+
+    return{
+        errors,
+        valid:Object.keys(errors).length<1
+    };
+}

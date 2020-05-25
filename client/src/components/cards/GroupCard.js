@@ -36,7 +36,7 @@ function GroupCard({ group: { groupId, groupName, id } }) {
             <div style={{ display: 'inline' }}>
                 <Card.Header style={{ display: 'inline' }}>
                     <Link to={`/groups/${groupId}`}>
-                        <h3 style={{ display: 'inline' }}>
+                        <h3 style={{ display: 'inline',color:'black' }} >
                             {groupName}
                         </h3>
                     </Link>

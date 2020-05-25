@@ -46,6 +46,7 @@ type Note{
     createdAt:String!
     grouped:Boolean!
     groupId:String!
+    noteName:String!
 }
 input RegisterInput{
     username:String!
@@ -67,10 +68,10 @@ input RegisterInput{
         register(registerInput:RegisterInput): User
         login(username:String!,password:String!):User
 
-        createNote(content:String!):Note!
+        createNote(content:String!,noteName:String!):Note!
         deleteNote(noteId:ID!):String!
         editNote(noteId:ID!,content:String!):Note!
-        createGroupedNote(content:String!,groupId:String!):Note!
+        createGroupedNote(content:String!,groupId:String!,noteName:String!):Note!
         refetchQuery:String!
         
         createRequest(username:String!,groupId:ID!,groupName:String!):User!

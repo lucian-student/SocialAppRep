@@ -25,7 +25,6 @@ function Login(props) {
             persistentUsername = values.username;
             context.login(userData);
             console.log(persistentUsername);
-            props.history.push('/home');
         },
         onError(err) {
             setErrors(err.graphQLErrors[0].extensions.exception.errors);
