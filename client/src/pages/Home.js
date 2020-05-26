@@ -1,4 +1,4 @@
-import React, { useContext, useState, Component } from 'react';
+import React, { useContext, useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Grid, Button } from 'semantic-ui-react';
 
@@ -50,7 +50,7 @@ function Home(props) {
       <div style={{ margin: "auto", width: '80%' }}>
         <Grid columns={1}>
           <Grid.Row >
-            <h1>your personal notes</h1>
+            <h1>your personal notes {user.username}</h1>
             {view ? (
               <Button onClick={handleNoteView}>
                 Set view to documents

@@ -14,17 +14,9 @@ function generatetoken(user) {
             email: user.email,
             username: user.username
         }
-        , SECRET_KEY,{expiresIn:'1d'});
+        , SECRET_KEY, { expiresIn: '1d' });
 }
-/*function refreshedToken(user) {
-    return jwt.sign(
-        {
-            id: user.id,
-            email: user.email,
-            username: user.username
-        }
-        , SECRET_KEY2);
-}*/
+
 module.exports = {
     Mutation: {
         async login(_, { username, password }) {
@@ -50,30 +42,27 @@ module.exports = {
             }
             const token = generatetoken(user);
 
-            //pridat refresh token do  returneni
 
-           // const refreshToken = refreshedToken(user);
-           
-         
+
+
             return {
                 ...user._doc,
                 id: user._id,
                 token
-               
-              
+
+
             }
         },
         async register(_, {
             registerInput: { username, email, password, confirmPassword
             } }
         ) {
-            // validation
+
             const { valid, errors } = validateRegisterInput(username, email, password, confirmPassword);
             if (!valid) {
                 throw new UserInputError('not valid inputs', { errors });
             }
 
-            // valdiate data
             const user = await User.findOne({ username });
 
             if (user) {
@@ -84,7 +73,7 @@ module.exports = {
                 });
             }
 
-            //creating user
+
             password = await bcrypt.hash(password, 10);
 
             const newUser = User({
@@ -98,7 +87,6 @@ module.exports = {
 
             const token = generatetoken(res);
 
-            //const refreshToken = refreshedToken(res);
 
             return {
                 ...res._doc,
@@ -112,7 +100,7 @@ module.exports = {
             try {
                 const user = await User.findById(userId);
                 if (user) {
-                    
+
                     return user;
                 } else {
                     throw new Error('user doesnt exist');

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import RequestForm from '../components/forms/RequestForm';
 import { GET_GROUP_QUERY } from '../util/graphql';
 import { useQuery, useSubscription } from '@apollo/react-hooks';
@@ -6,7 +6,6 @@ import { FETCH_GROUPED_NOTES_QUERY, GROUPED_NOTE_SUBSCRIPTION, REMOVE_NOTE_SUBSC
 import GroupedNoteForm from '../components/forms/GroupedNoteForm';
 import { Grid, Dropdown, Menu, Button } from 'semantic-ui-react';
 import NoteCard from '../components/cards/NoteCard';
-import { AuthContext } from '../context/auth';
 import NoteCard2 from '../components/cards/noteCard2';
 
 
@@ -14,8 +13,6 @@ import NoteCard2 from '../components/cards/noteCard2';
 
 function GroupPage(props) {
     const groupId = props.match.params.groupId;
-
-    const { user } = useContext(AuthContext);
 
     const { data, loading, error } = useQuery(GET_GROUP_QUERY, {
         variables: {
@@ -30,7 +27,6 @@ function GroupPage(props) {
     });
     // use fetchNotes.subscribeToMore
 
-    let notified = '0';
 
     let notes = '';
     let newData = '';
@@ -111,7 +107,8 @@ function GroupPage(props) {
     } else {
         const {
             id,
-            users
+            users,
+            name
         } = data.getGroup;
 
         const groupParams = data.getGroup;
@@ -124,7 +121,7 @@ function GroupPage(props) {
             <div style={{ display: "flex" }}>
                 <div style={{ margin: "auto", width: '80%' }}>
                     <div style={{ display: 'inline' }}>
-                        <h1 style={{ display: 'inline' }}>welcome to group {groupId}</h1>
+                        <h1 style={{ display: 'inline' }}>welcome to group {name}</h1>
 
                     </div>
                     <Menu compact>

@@ -27,7 +27,7 @@ function MenuBar(props) {
             <Menu pointing secondary>
                 <Link to='/home'>
                     <Menu.Item
-                        name={user.username}
+                        name='home'
                         active={activeItem === 'home'}
                         onClick={handleItemClick}
                     />
